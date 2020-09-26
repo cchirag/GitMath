@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "305158930318",
+    "firebase_url": "https://gitmath-483f1.firebaseio.com",
+    "project_id": "gitmath-483f1",
+    "storage_bucket": "gitmath-483f1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:305158930318:android:39d1f9b29b9070f1262edf",
+        "android_client_info": {
+          "package_name": "com.gitmath.gitmath"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "305158930318-fjl7th4ua8g6umr0nse1nqigjeplulhn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gitmath.gitmath",
+            "certificate_hash": "7770795bc7ce938391feb50cec54caef0e7c351c"
+          }
+        },
+        {
+          "client_id": "305158930318-i9hemrufnjkpds37jehhuj6m3pfsrimo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBA4hHbKm-OV7LVHQDt1swpumzJ-K-x6_E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "305158930318-i9hemrufnjkpds37jehhuj6m3pfsrimo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
