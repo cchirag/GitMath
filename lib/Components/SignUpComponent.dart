@@ -14,8 +14,13 @@ class _SignUpComponentState extends State<SignUpComponent> {
  final _emailController = TextEditingController();
 final _passwordController = TextEditingController();
 final _confirmPasswordController = TextEditingController();
+final _username = TextEditingController();
+bool _isLoading = false;
 
   handleSignUp() async {
+    setState(() {
+      _isLoading = true;
+    });
     if (_passwordController.text == _confirmPasswordController.text) {
       final _auth = FirebaseAuth.instance;
 
@@ -24,7 +29,7 @@ final _confirmPasswordController = TextEditingController();
               email: _emailController.text, password: _passwordController.text)
           .then((user) async{
         await user.user.updateProfile(
-            displayName: _emailController.text,
+            displayName: _username.text,
             photoURL:
                 "https://images.unsplash.com/photo-1590959651373-a3db0f38a961?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=937&q=80");
       }).then((res){
@@ -37,7 +42,11 @@ final _confirmPasswordController = TextEditingController();
           "profileImage": _auth.currentUser.photoURL,
           "repos": [],
           "bio": "",
-          "interests": [],
+          "status": "Thinking"
+        });
+      }).whenComplete((){
+        setState(() {
+          _isLoading = false;
         });
       });
     }
@@ -48,6 +57,31 @@ final _confirmPasswordController = TextEditingController();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+
+        Container(
+          width: MediaQuery.of(context).size.width * 0.9,
+          margin: EdgeInsets.only(top: 20, bottom: 20),
+          child: TextField(
+            controller: _username,
+            style: TextStyle(color: Colors.white),
+            cursorColor: Color(0XFF5C7ECC),
+            decoration: InputDecoration(
+              hintText: "Username",
+              hintStyle: TextStyle(
+                color: Color(0XFF5A5A5E),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Color(0XFF5C7ECC), width: 1.0),
+              ),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                  color: Color(0XFF5A5A5E),
+                  width: 1.0,
+                ),
+              ),
+            ),
+          ),
+        ),
         Container(
           width: MediaQuery.of(context).size.width * 0.9,
           margin: EdgeInsets.only(top: 20, bottom: 20),
@@ -130,10 +164,15 @@ final _confirmPasswordController = TextEditingController();
             onPressed: () {
               handleSignUp();
             },
-            child: Text(
-              "Sign Up",
-              style: TextStyle(fontSize: 20),
-            ),
+            child:  _isLoading
+                ? CircularProgressIndicator(
+                    strokeWidth: 2.0,
+                    valueColor: AlwaysStoppedAnimation<Color>(Color(0XFFFA7777)),
+                  )
+                : Text(
+                    "Sign Up",
+                    style: TextStyle(fontSize: 20),
+                  ),
             textColor: Colors.white,
             color: Color(0XFF5A5A5E),
           ),

@@ -1,6 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gitmath/Screens/CreateRepoScreen.dart';
 import 'package:gitmath/Screens/HomeScreen.dart';
+import 'package:gitmath/Screens/ProfileScreen.dart';
 import 'package:gitmath/Screens/RootScreen.dart';
 import 'package:gitmath/Screens/SignInScreen.dart';
 
@@ -34,7 +36,9 @@ class _MyAppState extends State<MyApp> {
       routes: {
         "/": (context) => RootScreen(),
         "/signin": (context) => SignInScreen(),
-        "/home": (context) => HomeScreen()
+        "/home": (context) => HomeScreen(),
+        "/profile": (context) => ProfileScreen(),
+        "/createRepo": (context) => CreateRepoScreen()
       },
     );
   }
