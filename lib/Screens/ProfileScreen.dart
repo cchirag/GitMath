@@ -16,7 +16,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _status = "Thinking";
   bool _bioIsEditable = false;
   final _bioController = TextEditingController();
-  List _repos = [];
+  final _repoNameController = TextEditingController();
 
   @override
   void initState() {
@@ -30,7 +30,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           setState(() {
             _status = snapShot.get("status");
             _bioController.text = snapShot.get("bio");
-            _repos = snapShot.get("repos");
           });
         }
       });
@@ -66,7 +65,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     titleTextStyle:
                         TextStyle(color: Colors.white, fontSize: 20),
                     contentPadding: EdgeInsets.symmetric(horizontal: 15),
-                    children: [CreateRepoScreen()],
+                    children: [
+                      CreateRepoScreen(
+                        name: _repoNameController,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: FlatButton(
+                            color: Color(0XFF5C7ECC),
+                            onPressed: () async {
+                              await FirebaseFirestore.instance
+                                  .collection("repositories")
+                                  .doc()
+                                  .set(
+                                {
+                                  "name": _repoNameController.text,
+                                  "createdBy":
+                                      FirebaseAuth.instance.currentUser.uid,
+                                  "lastPush": null,
+                                  "versions": []
+                                },
+                              ).then((value) {
+                                _repoNameController.text = '';
+                                Navigator.pop(context);
+                              });
+                            },
+                            child: Text(
+                              "Create",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                      )
+                    ],
                   ),
                 );
               },
@@ -213,24 +242,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         "My Repo",
                         style: TextStyle(color: Colors.white, fontSize: 25),
                       ),
-                      _repos.length != 0
-                          ? Expanded(
-                              child: Center(
-                                child: Text(
-                                  "No Repo yet",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                              ),
-                            )
-                          : Expanded(
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemBuilder: (BuildContext ctxt, int index) {
-                                  return RepoDisplayComponent();
-                                },
-                                itemCount: 10,
-                              ),
-                            )
+                      StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection("repositories")
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            return Expanded(
+                                child: snapshot.hasData == false
+                                    ? CircularProgressIndicator()
+                                    : ListView.builder(
+                                        itemCount:
+                                            snapshot.data.documents.length,
+                                        itemBuilder: (context, index) {
+                                          return RepoDisplayComponent(snapshot.data.documents[index]);
+                                        }));
+                          })
                     ],
                   ),
                 ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CreateRepoScreen extends StatefulWidget {
-  CreateRepoScreen({Key key}) : super(key: key);
+  final TextEditingController name;
+
+  CreateRepoScreen({this.name, Key key}) : super(key: key);
 
   @override
   _CreateRepoScreenState createState() => _CreateRepoScreenState();
@@ -17,6 +19,7 @@ class _CreateRepoScreenState extends State<CreateRepoScreen> {
         width: MediaQuery.of(context).size.width * 0.9,
         child: TextField(
           style: TextStyle(color: Colors.white),
+          controller: widget.name,
           decoration: InputDecoration(
             hintText: "Repository Name",
             hintStyle: TextStyle(

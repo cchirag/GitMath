@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gitmath/Components/AppDrawerComponent.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gitmath/Components/RepoDisplayComponent.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -9,6 +11,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final _searchTerm = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,6 +24,7 @@ class _HomeScreenState extends State<HomeScreen> {
             Expanded(
               child: TextField(
                 style: TextStyle(color: Colors.white),
+                controller: _searchTerm,
                 cursorColor: Color(0XFF5C7ECC),
                 decoration: InputDecoration(
                   hintText: "Search",
@@ -54,8 +59,34 @@ class _HomeScreenState extends State<HomeScreen> {
       drawer: AppDrawerComponent(),
       body: Container(
           color: Colors.black,
-          child: Center(
-            child: Text("Home"),
+          width: MediaQuery.of(context).size.width,
+          child: Container(
+            padding: EdgeInsets.all(20),
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection("repositories")
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData)
+                  return Expanded(
+                    child: Container(
+                      width: 100,
+                      height: 100,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                      ),
+                    ),
+                  );
+                return Container(
+                  child: ListView.builder(
+                      itemCount: snapshot.data.documents.length,
+                      itemBuilder: (context, index) {
+                        return RepoDisplayComponent(
+                            snapshot.data.documents[index]);
+                      }),
+                );
+              },
+            ),
           )),
     );
   }
