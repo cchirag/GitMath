@@ -174,7 +174,7 @@ bool _isLoading = false;
                     style: TextStyle(fontSize: 20),
                   ),
             textColor: Colors.white,
-            color: Color(0XFF5A5A5E),
+            color: Color(0XFF5C7ECC),
           ),
         ),
         Text(

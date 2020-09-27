@@ -111,12 +111,14 @@ class _AppDrawerComponentState extends State<AppDrawerComponent> {
           FlatButton(
             padding: EdgeInsets.symmetric(horizontal: 0),
             color: Colors.transparent,
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, "/privacypolicy");
+            },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Icon(
-                  Icons.settings,
+                  Icons.event_note,
                   color: Colors.white,
                   size: 20,
                 ),
@@ -124,36 +126,7 @@ class _AppDrawerComponentState extends State<AppDrawerComponent> {
                   width: 5,
                 ),
                 Text(
-                  "Settings",
-                  style: TextStyle(color: Colors.white, fontSize: 18),
-                ),
-                Expanded(
-                    child: Align(
-                        alignment: Alignment.centerRight,
-                        child: Icon(
-                          Icons.keyboard_arrow_right,
-                          color: Colors.white,
-                        )))
-              ],
-            ),
-          ),
-          FlatButton(
-            padding: EdgeInsets.symmetric(horizontal: 0),
-            color: Colors.transparent,
-            onPressed: () {},
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Icon(
-                  Icons.notifications,
-                  color: Colors.white,
-                  size: 20,
-                ),
-                SizedBox(
-                  width: 5,
-                ),
-                Text(
-                  "Notifications",
+                  "Privacy Policy",
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 Expanded(

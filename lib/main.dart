@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gitmath/Screens/CreateRepoScreen.dart';
 import 'package:gitmath/Screens/HomeScreen.dart';
+import 'package:gitmath/Screens/PrivacyPolicyScreen.dart';
 import 'package:gitmath/Screens/ProfileScreen.dart';
 import 'package:gitmath/Screens/RepoViewScreen.dart';
 import 'package:gitmath/Screens/RootScreen.dart';
@@ -44,7 +45,8 @@ class _MyAppState extends State<MyApp> {
             "/profile": (context) => ProfileScreen(),
             "/createRepo": (context) => CreateRepoScreen(),
             "/repoView": (context) => RepoViewScreen(settings.arguments),
-            "/whiteBoard": (context) => WhiteBoardScreen(settings.arguments)
+            "/whiteBoard": (context) => WhiteBoardScreen(settings.arguments),
+            "/privacypolicy": (context) => PrivacyPolicyScreen(),
           };
           WidgetBuilder builder = routes[settings.name];
           return MaterialPageRoute(builder: (context) => builder(context));
