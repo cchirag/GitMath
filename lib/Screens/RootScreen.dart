@@ -20,16 +20,16 @@ class _RootScreenState extends State<RootScreen> {
     isMounted = true;
     print("root init");
     _auth.authStateChanges().listen((user) {
-      if (user != null) {
+      if (user == null) {
         if (isMounted) {
           setState(() {
-            isAuthenticated = true;
+            isAuthenticated = false;
           });
         }
       } else {
         if (isMounted) {
           setState(() {
-            isAuthenticated = false;
+            isAuthenticated = true;
           });
         }
       }

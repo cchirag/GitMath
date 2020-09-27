@@ -8,7 +8,15 @@ class AppDrawerComponent extends StatefulWidget {
   _AppDrawerComponentState createState() => _AppDrawerComponentState();
 }
 
+
 class _AppDrawerComponentState extends State<AppDrawerComponent> {
+
+  @override
+  void dispose() {
+    FirebaseAuth.instance.currentUser;
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -144,8 +152,7 @@ class _AppDrawerComponentState extends State<AppDrawerComponent> {
               padding: EdgeInsets.symmetric(horizontal: 0),
               color: Colors.transparent,
               onPressed: () {
-                Navigator.pop(context);
-                FirebaseAuth.instance.signOut();
+                FirebaseAuth.instance.signOut().then((value) => Navigator.pushNamed(context, "/signin"));
               },
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.start,
