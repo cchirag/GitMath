@@ -17,9 +17,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _bioIsEditable = false;
   final _bioController = TextEditingController();
   final _repoNameController = TextEditingController();
+  bool isMounted = false;
 
   @override
   void initState() {
+    isMounted = true;
     fetchData() async {
       await FirebaseFirestore.instance
           .collection("users")
@@ -27,10 +29,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
           .get()
           .then((snapShot) {
         if (snapShot.exists) {
-          setState(() {
-            _status = snapShot.get("status");
-            _bioController.text = snapShot.get("bio");
-          });
+          if (isMounted) {
+            setState(() {
+              _status = snapShot.get("status");
+              _bioController.text = snapShot.get("bio");
+            });
+          }
         }
       });
     }
@@ -41,6 +45,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   void dispose() {
+    isMounted = false;
     super.dispose();
   }
 
@@ -254,7 +259,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                         itemCount:
                                             snapshot.data.documents.length,
                                         itemBuilder: (context, index) {
-                                          return RepoDisplayComponent(snapshot.data.documents[index]);
+                                          return RepoDisplayComponent(
+                                              snapshot.data.documents[index]);
                                         }));
                           })
                     ],

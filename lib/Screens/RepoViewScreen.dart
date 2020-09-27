@@ -22,20 +22,30 @@ class _RepoViewScreenState extends State<RepoViewScreen> {
   BuildContext context;
   var _itemCount = 0;
   var _items = [];
+  bool isMounted = false;
 
   @override
   void initState() {
+    isMounted = true;
     FirebaseFirestore.instance
         .collection("repositories")
         .doc(widget.args.docId)
         .snapshots()
         .listen((event) {
-      setState(() {
-        _itemCount = event.data()["versions"].length;
-        _items = event.data()["versions"];
-      });
+      if (isMounted) {
+        setState(() {
+          _itemCount = event.data()["versions"].length;
+          _items = event.data()["versions"];
+        });
+      }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    isMounted = false;
+    super.dispose();
   }
 
   @override
@@ -50,8 +60,7 @@ class _RepoViewScreenState extends State<RepoViewScreen> {
           IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              Navigator.pushNamed(context, "/whiteBoard",
-                  arguments: WhiteBoardArgs(widget.args.docId));
+              Navigator.pushNamed(context, "/whiteBoard");
             },
             color: Colors.white,
           )
@@ -94,24 +103,25 @@ class _RepoViewScreenState extends State<RepoViewScreen> {
               ),
               Expanded(
                 child: Container(
-                  color: Colors.black,
-                  margin: EdgeInsets.symmetric(vertical: 10),
-                  width: double.infinity,
-                  child: ListView.builder(
-                      itemCount: _itemCount,
-                      itemBuilder: (context, index) {
-                        return FlatButton(
-                            onPressed: () {},
-                            child: Row(
-                              children: [
-                                Text(
-                                  "Chirag Chan",
-                                  style: TextStyle(color: Colors.white),
-                                )
-                              ],
-                            ));
-                      }),
-                ),
+                    color: Colors.black,
+                    margin: EdgeInsets.symmetric(vertical: 10),
+                    width: double.infinity,
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: _items
+                            .map((e) => FlatButton(
+                                  onPressed: () {
+                                    Navigator.pushNamed(context, "/whiteBoard",
+                                        arguments: WhiteBoardArgs(widget.args.docId,e["data"]));
+                                  },
+                                  child: Text(
+                                    e["data"],
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ))
+                            .toList(),
+                      ),
+                    )),
               )
             ],
           ),

@@ -68,13 +68,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   .snapshots(),
               builder: (context, snapshot) {
                 if (!snapshot.hasData)
-                  return Expanded(
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      ),
+                  return Container(
+                    width: 100,
+                    height: 100,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
                     ),
                   );
                 return Container(

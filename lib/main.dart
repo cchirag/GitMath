@@ -21,7 +21,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String currentId = "";
 
   @override
   void initState() {
@@ -45,7 +44,7 @@ class _MyAppState extends State<MyApp> {
             "/profile": (context) => ProfileScreen(),
             "/createRepo": (context) => CreateRepoScreen(),
             "/repoView": (context) => RepoViewScreen(settings.arguments),
-            "/whiteBoard": (context) => WhiteBoardScreen()
+            "/whiteBoard": (context) => WhiteBoardScreen(settings.arguments)
           };
           WidgetBuilder builder = routes[settings.name];
           return MaterialPageRoute(builder: (context) => builder(context));

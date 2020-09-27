@@ -49,7 +49,7 @@ class _AppDrawerComponentState extends State<AppDrawerComponent> {
             padding: EdgeInsets.symmetric(horizontal: 0),
             color: Colors.transparent,
             onPressed: () {
-              Navigator.pushReplacementNamed(context, '/home');
+              Navigator.pushNamed(context, '/home');
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -81,7 +81,7 @@ class _AppDrawerComponentState extends State<AppDrawerComponent> {
             padding: EdgeInsets.symmetric(horizontal: 0),
             color: Colors.transparent,
             onPressed: () {
-              Navigator.pushReplacementNamed(context, "/profile");
+              Navigator.pushNamed(context, "/profile");
             },
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -171,6 +171,7 @@ class _AppDrawerComponentState extends State<AppDrawerComponent> {
               padding: EdgeInsets.symmetric(horizontal: 0),
               color: Colors.transparent,
               onPressed: () {
+                Navigator.pop(context);
                 FirebaseAuth.instance.signOut();
               },
               child: Row(

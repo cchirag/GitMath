@@ -12,22 +12,36 @@ class RootScreen extends StatefulWidget {
 
 class _RootScreenState extends State<RootScreen> {
   bool isAuthenticated = false;
+  bool isMounted = false;
+  final _auth = FirebaseAuth.instance;
 
   @override
   void initState() {
-    final _auth = FirebaseAuth.instance;
+    isMounted = true;
+    print("root init");
     _auth.authStateChanges().listen((user) {
       if (user != null) {
-        setState(() {
-          isAuthenticated = true;
-        });
+        if (isMounted) {
+          setState(() {
+            isAuthenticated = true;
+          });
+        }
       } else {
-        setState(() {
-          isAuthenticated = false;
-        });
+        if (isMounted) {
+          setState(() {
+            isAuthenticated = false;
+          });
+        }
       }
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    print("root dispo");
+    isMounted = false;
+    super.dispose();
   }
 
   @override

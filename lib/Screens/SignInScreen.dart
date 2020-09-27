@@ -13,6 +13,19 @@ class _SignInScreenState extends State<SignInScreen> {
   bool _signInActive = true;
 
   @override
+  void initState() {
+    print("signin init");
+    super.initState();
+    
+  }
+
+  @override
+  void dispose() {
+    print("signin dispose");
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SingleChildScrollView(
