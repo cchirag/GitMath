@@ -115,7 +115,7 @@ class _RepoViewScreenState extends State<RepoViewScreen> {
                                         arguments: WhiteBoardArgs(widget.args.docId,e["data"]));
                                   },
                                   child: Text(
-                                    e["data"],
+                                    e["createdBy"],
                                     style: TextStyle(color: Colors.white),
                                   ),
                                 ))
