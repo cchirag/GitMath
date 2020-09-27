@@ -23,6 +23,7 @@ class _RepoViewScreenState extends State<RepoViewScreen> {
   var _itemCount = 0;
   var _items = [];
   bool isMounted = false;
+  var buttonIndex = 1;
 
   @override
   void initState() {
@@ -57,10 +58,10 @@ class _RepoViewScreenState extends State<RepoViewScreen> {
           style: TextStyle(color: Colors.white),
         ),
         actions: [
-          IconButton(
+          _itemCount > 0 ? Container() : IconButton(
             icon: Icon(Icons.add),
             onPressed: () {
-              Navigator.pushNamed(context, "/whiteBoard");
+              Navigator.pushNamed(context, "/whiteBoard", arguments: WhiteBoardArgs(widget.args.docId, null));
             },
             color: Colors.white,
           )
@@ -109,16 +110,34 @@ class _RepoViewScreenState extends State<RepoViewScreen> {
                     child: SingleChildScrollView(
                       child: Column(
                         children: _items
-                            .map((e) => FlatButton(
+                            .map(
+                              (e) => Container(
+                                width: MediaQuery.of(context).size.width * 0.8,
+                                margin: EdgeInsets.symmetric(vertical: 10),
+                                child: FlatButton(
+                                  color: Color(0XFF5C7ECC),
                                   onPressed: () {
                                     Navigator.pushNamed(context, "/whiteBoard",
-                                        arguments: WhiteBoardArgs(widget.args.docId,e["data"]));
+                                        arguments: WhiteBoardArgs(
+                                            widget.args.docId, e["data"]));
                                   },
-                                  child: Text(
-                                    e["createdBy"],
-                                    style: TextStyle(color: Colors.white),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        "Pushed By:",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      Text(
+                                        e["createdBy"],
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
                                   ),
-                                ))
+                                ),
+                              ),
+                            )
                             .toList(),
                       ),
                     )),

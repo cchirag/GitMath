@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gitmath/Components/AppDrawerComponent.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gitmath/Components/RepoDisplayComponent.dart';
+import 'package:gitmath/Screens/CreateRepoScreen.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
@@ -12,6 +14,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _searchTerm = TextEditingController();
+  final _repoNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -49,9 +52,54 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 20),
-            child: Icon(
-              Icons.add_circle_outline,
-              color: Color(0XFF5C7ECC),
+            child: IconButton(
+              icon: Icon(
+                Icons.add_circle_outline,
+                color: Color(0XFF5C7ECC),
+              ),
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (context) => SimpleDialog(
+                    backgroundColor: Color(0XFF2A2A2A),
+                    title: Text("Create Repository"),
+                    titleTextStyle:
+                        TextStyle(color: Colors.white, fontSize: 20),
+                    contentPadding: EdgeInsets.symmetric(horizontal: 15),
+                    children: [
+                      CreateRepoScreen(
+                        name: _repoNameController,
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 10),
+                        child: FlatButton(
+                            color: Color(0XFF5C7ECC),
+                            onPressed: () async {
+                              await FirebaseFirestore.instance
+                                  .collection("repositories")
+                                  .doc()
+                                  .set(
+                                {
+                                  "name": _repoNameController.text,
+                                  "createdBy":
+                                      FirebaseAuth.instance.currentUser.uid,
+                                  "lastPush": null,
+                                  "versions": []
+                                },
+                              ).then((value) {
+                                _repoNameController.text = '';
+                                Navigator.pop(context);
+                              });
+                            },
+                            child: Text(
+                              "Create",
+                              style: TextStyle(color: Colors.white),
+                            )),
+                      )
+                    ],
+                  ),
+                );
+              },
             ),
           ),
         ],

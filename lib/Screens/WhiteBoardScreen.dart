@@ -12,7 +12,7 @@ class WhiteBoardArgs {
 
 class WhiteBoardScreen extends StatefulWidget {
   final args;
-  WhiteBoardScreen(this.args,{Key key}) : super(key: key);
+  WhiteBoardScreen(this.args, {Key key}) : super(key: key);
 
   @override
   _WhiteBoardScreenState createState() => _WhiteBoardScreenState();
@@ -25,8 +25,12 @@ class _WhiteBoardScreenState extends State<WhiteBoardScreen> {
 
   @override
   void initState() {
-    var draw = WhiteboardDraw.fromWhiteboardSVG(widget.args.svg);
-    controller = new DrawingController(draw: draw);
+    if (widget.args.svg == null) {
+      controller = new DrawingController();
+    } else {
+      var draw = WhiteboardDraw.fromWhiteboardSVG(widget.args.svg);
+      controller = new DrawingController(draw: draw);
+    }
     controller.onChange().listen((event) {
       setState(() {
         _currentSVG = controller.getDraw().getSVG();
@@ -40,20 +44,28 @@ class _WhiteBoardScreenState extends State<WhiteBoardScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Hello",
+            "Whiteboard",
             style: TextStyle(color: Colors.white),
           ),
           actions: [
             IconButton(
               icon: Icon(Icons.publish),
               onPressed: () {
-                FirebaseFirestore.instance.collection("repositories").doc(widget.args.docId).update({
-                  "versions": FieldValue.arrayUnion([{
-                    "createdBy": FirebaseAuth.instance.currentUser.displayName,
-                    "data": _currentSVG,
-                    "createdAt": DateTime.now().millisecondsSinceEpoch
-                  }])
-                }).then((value){Navigator.pop(context);});
+                FirebaseFirestore.instance
+                    .collection("repositories")
+                    .doc(widget.args.docId)
+                    .update({
+                  "versions": FieldValue.arrayUnion([
+                    {
+                      "createdBy":
+                          FirebaseAuth.instance.currentUser.displayName,
+                      "data": _currentSVG,
+                      "createdAt": DateTime.now().millisecondsSinceEpoch
+                    }
+                  ])
+                }).then((value) {
+                  Navigator.pop(context);
+                });
               },
               color: Colors.white,
             )
